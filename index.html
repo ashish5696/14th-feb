@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Rose Day</title>
+    <style>
+        body {
+            text-align: center;
+            background-color: #ffe6f2;
+            font-family: Arial, sans-serif;
+            display: flex;
+        }
+        .content {
+            flex: 1;
+        }
+        .menu-button {
+            background: #ff6699;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            border-radius: 5px;
+        }
+        .dropdown {
+            display: none;
+            position: absolute;
+            background: #ffccdd;
+            left: 10px;
+            top: 40px;
+            width: 150px;
+            border-radius: 5px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .dropdown a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: #d63384;
+            font-weight: bold;
+        }
+        .dropdown a:hover {
+            background: #ff99bb;
+        }
+        h1 {
+            color: #d63384;
+        }
+        .greeting img {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+        }
+        .game, .surprise {
+            margin-top: 20px;
+        }
+        .box {
+            width: 100px;
+            height: 100px;
+            background: pink;
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        #letter {
+            display: none;
+            color: #d63384;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+        .timeline {
+            margin-top: 40px;
+            padding: 20px;
+            background: #ffccdd;
+            border-radius: 10px;
+        }
+        .timeline ul {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .timeline li {
+            font-size: 18px;
+            font-weight: bold;
+            color: #d63384;
+            margin: 5px 0;
+        }
+        .timeline a {
+            text-decoration: none;
+            color: #d63384;
+            font-weight: bold;
+        }
+        canvas {
+            background: #fff0f5;
+            border: 2px solid #d63384;
+            display: block;
+            margin: 20px auto;
+        }
+        .greeting img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <button class="menu-button" onclick="toggleMenu()">☰ Menu</button>
+    <div class="dropdown" id="menuDropdown">
+        <a href="#">Gallery</a>
+        <a href="#">Video</a>
+        <a href="#">Call Your BF</a>
+    </div>
+    <div class="content">
+        <h1>Happy Rose Day My Love ❤️</h1>
+        <div class="greeting">
+            <img src="your-girlfriend-image.jpg" alt="Her Image">
+            <p>You're the most beautiful rose in my life!</p>
+        </div>
+
+        <div class="game">
+            <h2>Catch the Falling Roses Game 🌹</h2>
+            <canvas id="gameCanvas" width="400" height="500"></canvas>
+        </div>
+
+        <div class="surprise">
+            <h2>Surprise Box 🎁</h2>
+            <div class="box" onclick="openBox()">Open</div>
+            <p id="letter">My love, you mean the world to me. Happy Rose Day! 🌹</p>
+        </div>
+
+        <div class="timeline">
+            <a href="#" onclick="scrollToTop(); return false;">7th Feb - Rose Day 🌹</a>
+            <a href="propose-day.html">8th Feb - Propose Day 💍</a>
+            <a href="chocolate-day.html">9th Feb - Chocolate Day 🍫</a>
+            <a href="teddy-day.html">10th Feb - Teddy Day 🧸</a>
+            <a href="promise-day.html">11th Feb - Promise Day 🤞</a>
+            <a href="hug-day.html">12th Feb - Hug Day 🤗</a>
+            <a href="kiss-day.html">13th Feb - Kiss Day 😘</a>
+            <a href="valentines-day.html">14th Feb - Valentine's Day ❤️</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+        let basketX = 175;
+        let roses = [];
+        let score = 0;
+
+        const roseImage = new Image();
+        roseImage.src = "rose.png";
+        roseImage.onload = () => {
+            updateGame();
+        };
+        roseImage.onerror = () => {
+            console.error("Failed to load rose.png. Make sure the file exists.");
+        };
+
+        function drawBasket() {
+            ctx.fillStyle = "brown";
+            ctx.fillRect(basketX, 450, 50, 20);
+        }
+
+        function drawRoses() {
+            roses.forEach(rose => {
+                if (roseImage.complete) {
+                    ctx.drawImage(roseImage, rose.x, rose.y, 30, 30);
+                }
+            });
+        }
+
+        function updateGame() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawBasket();
+            drawRoses();
+
+            roses.forEach((rose, index) => {
+                rose.y += 3;
+                if (rose.y > 440 && rose.x > basketX && rose.x < basketX + 50) {
+                    roses.splice(index, 1);
+                    score++;
+                }
+            });
+
+            if (Math.random() < 0.02) {
+                roses.push({ x: Math.random() * 380, y: 0 });
+            }
+
+            requestAnimationFrame(updateGame);
+        }
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "ArrowLeft" && basketX > 0) {
+                basketX -= 20;
+            } else if (e.key === "ArrowRight" && basketX < 350) {
+                basketX += 20;
+            }
+        });
+
+        function openBox() {
+            document.getElementById("letter").style.display = "block";
+        }
+
+
+        function toggleMenu() {
+            const menu = document.getElementById("menuDropdown");
+            menu.style.display = menu.style.display === "block" ? "none" : "block";
+        }
+
+        function openBox() {
+            document.getElementById("letter").style.display = "block";
+        }
+    </script>
+</body>
+</html>
