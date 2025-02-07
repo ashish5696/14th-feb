@@ -5,19 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Happy Rose Day</title>
     <style>
-        body {
-            text-align: center;
-            background-color: #ffe6f2;
-            font-family: Arial, sans-serif;
-            display: flex;
-        }
-        .content {
-            flex: 1;
-        }
+
+body {
+    text-align: center;
+    background-color: #ffe6f2;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 20px;
+}
+.content {
+    max-width: 100%;
+    width: 90%;
+}
         .menu-button {
             background: #ff6699;
             color: white;
-            padding: 10px;
             border: none;
             cursor: pointer;
             font-size: 16px;
@@ -26,34 +32,42 @@
             left: 10px;
             border-radius: 5px;
         }
+
+.menu-button {
+    width: auto;
+    padding: 10px 15px;
+}
         .dropdown {
             display: none;
             position: absolute;
             background: #ffccdd;
             left: 10px;
             top: 40px;
-            width: 150px;
-            border-radius: 5px;
+
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
         }
+.dropdown {
+    width: 100%;
+    max-width: 180px;
+}
         .dropdown a {
             display: block;
             padding: 10px;
             text-decoration: none;
-            color: #d63384;
+            color: #D6338F;
             font-weight: bold;
         }
         .dropdown a:hover {
-            background: #ff99bb;
+            background: #be5c80;
         }
         h1 {
             color: #d63384;
         }
-        .greeting img {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-        }
+.greeting img {
+    width: 80%;
+    max-width: 250px;
+    height: auto;
+}
         .game, .surprise {
             margin-top: 20px;
         }
@@ -80,7 +94,14 @@
             padding: 20px;
             background: #ffccdd;
             border-radius: 10px;
-        }
+            display: flex;
+            flex-wrap: wrap;
+            justify-content:space-evenly;
+            overflow-x: auto;
+            white-space: nowrap;
+            gap: 10px;
+            padding-bottom: 10px;
+        }      
         .timeline ul {
             list-style-type: none;
             padding: 0;
@@ -96,21 +117,50 @@
         }
         .timeline a {
             text-decoration: none;
-            color: #d63384;
+            color: white;
             font-weight: bold;
+            background: #d63384;
+            padding: 12px 20px;
+            border-radius: 10px;
+            transition: 0.3s;
+            display: inline-block;
+            width: 80%;
+            min-width: 120px;
+            text-align: center;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        .timeline a:hover {
+            background: #ff6699;
+            transform: scale(1.05);
         }
         canvas {
             background: #fff0f5;
             border: 2px solid #d63384;
             display: block;
+            width: 100%;
+            max-width: 400px;
             margin: 20px auto;
+            height: auto;
         }
         .greeting img {
-            max-width: 100%;
+            width: 80%;
             height: auto;
+            max-width: 250px;
             border-radius: 50%;
             object-fit: cover;
         }
+        @media screen and (max-width: 600px) {
+    .timeline a {
+        width: 90%;
+    }
+    .game h2, .surprise h2 {
+        font-size: 16px;
+    }
+    .menu-button {
+        font-size: 14px;
+        padding: 8px;
+    }
+}
     </style>
 </head>
 <body>
@@ -147,7 +197,7 @@
             <a href="hug-day.html">12th Feb - Hug Day 🤗</a>
             <a href="kiss-day.html">13th Feb - Kiss Day 😘</a>
             <a href="valentines-day.html">14th Feb - Valentine's Day ❤️</a>
-        </div>
+        </div>        
     </div>
 
         <script>
