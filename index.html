@@ -150,76 +150,89 @@
         </div>
     </div>
 
-    <script>
-        const canvas = document.getElementById("gameCanvas");
-        const ctx = canvas.getContext("2d");
-        let basketX = 175;
-        let roses = [];
-        let score = 0;
+        <script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+    let basketX = 175;
+    let roses = [];
+    let score = 0;
+    let touchStartX = 0;
 
-        const roseImage = new Image();
-        roseImage.src = "rose.png";
-        roseImage.onload = () => {
-            updateGame();
-        };
-        roseImage.onerror = () => {
-            console.error("Failed to load rose.png. Make sure the file exists.");
-        };
+    const roseImage = new Image();
+    roseImage.src = "rose.png";
+    roseImage.onload = () => {
+        updateGame();
+    };
+    roseImage.onerror = () => {
+        console.error("Failed to load rose.png. Make sure the file exists.");
+    };
 
-        function drawBasket() {
-            ctx.fillStyle = "brown";
-            ctx.fillRect(basketX, 450, 50, 20);
-        }
+    function drawBasket() {
+        ctx.fillStyle = "brown";
+        ctx.fillRect(basketX, 450, 50, 20);
+    }
 
-        function drawRoses() {
-            roses.forEach(rose => {
-                if (roseImage.complete) {
-                    ctx.drawImage(roseImage, rose.x, rose.y, 30, 30);
-                }
-            });
-        }
-
-        function updateGame() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            drawBasket();
-            drawRoses();
-
-            roses.forEach((rose, index) => {
-                rose.y += 3;
-                if (rose.y > 440 && rose.x > basketX && rose.x < basketX + 50) {
-                    roses.splice(index, 1);
-                    score++;
-                }
-            });
-
-            if (Math.random() < 0.02) {
-                roses.push({ x: Math.random() * 380, y: 0 });
+    function drawRoses() {
+        roses.forEach(rose => {
+            if (roseImage.complete) {
+                ctx.drawImage(roseImage, rose.x, rose.y, 30, 30);
             }
+        });
+    }
 
-            requestAnimationFrame(updateGame);
-        }
+    function updateGame() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawBasket();
+        drawRoses();
 
-        document.addEventListener("keydown", (e) => {
-            if (e.key === "ArrowLeft" && basketX > 0) {
-                basketX -= 20;
-            } else if (e.key === "ArrowRight" && basketX < 350) {
-                basketX += 20;
+        roses.forEach((rose, index) => {
+            rose.y += 3;
+            if (rose.y > 440 && rose.x > basketX && rose.x < basketX + 50) {
+                roses.splice(index, 1);
+                score++;
             }
         });
 
-        function openBox() {
-            document.getElementById("letter").style.display = "block";
+        if (Math.random() < 0.02) {
+            roses.push({ x: Math.random() * 380, y: 0 });
         }
 
+        requestAnimationFrame(updateGame);
+    }
 
-        function toggleMenu() {
-            const menu = document.getElementById("menuDropdown");
-            menu.style.display = menu.style.display === "block" ? "none" : "block";
+    // Keyboard Controls
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowLeft" && basketX > 0) {
+            basketX -= 20;
+        } else if (e.key === "ArrowRight" && basketX < 350) {
+            basketX += 20;
         }
+    });
 
-        function openBox() {
-            document.getElementById("letter").style.display = "block";
+    // Touch Controls
+    canvas.addEventListener("touchstart", (e) => {
+        touchStartX = e.touches[0].clientX;
+    });
+
+    canvas.addEventListener("touchmove", (e) => {
+        const touchX = e.touches[0].clientX;
+        if (touchX < touchStartX && basketX > 0) {
+            basketX -= 20;
+        } else if (touchX > touchStartX && basketX < 350) {
+            basketX += 20;
         }
-    </script>
+        touchStartX = touchX;
+    });
+
+    function openBox() {
+        document.getElementById("letter").style.display = "block";
+    }
+
+    function toggleMenu() {
+        const menu = document.getElementById("menuDropdown");
+        menu.style.display = menu.style.display === "block" ? "none" : "block";
+    }
+</script>
+
 </body>
 </html>
